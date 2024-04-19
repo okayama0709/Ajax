@@ -29,12 +29,12 @@
           </li>
 
           <div class="flex">
-            <li id="do10sNext">
-              <img class="arrow" src="./icons8-左-50.png" alt="" />
-              <span>10秒先へ</span>
-            </li>
             <li id="do10sPrev">
-              <span> 10秒戻る</span>
+              <img class="arrow" src="./icons8-左-50.png" alt="" />
+              <span>10秒戻る</span>
+            </li>
+            <li id="do10sNext">
+              <span> 10秒前へ</span>
               <img class="arrow right" src="./icons8-左-50.png" alt="" />
             </li>
           </div>
@@ -97,7 +97,7 @@
       function ytSearch(val) {
         const imglist = document.querySelector(".imglist");
         const key = "AIzaSyCZV0ak51HGn1ZSic_dZSC76c11lIuf1zg"; //自分のキーに書き換えます。
-        const num = 10;
+        const num = 12;
         const part = "snippet";
         const type = "video";
         const query = val;
@@ -122,18 +122,23 @@
               const createArticle = document.createElement("article");
               const thumTitle = document.createElement("h3");
               const createImg = document.createElement("img");
-              const optionTag = document.createElement("option");
               createImg.setAttribute(
                 "src",
                 obj["items"][i]["snippet"]["thumbnails"]["high"]["url"]
               );
-              console.log(createImg.src);
-              optionTag.textContent = ytTitle;
+              thumTitle.textContent = obj["items"][i]["snippet"]["title"];
+
+              createArticle.appendChild(createImg, thumTitle);
+              createArticle.appendChild(thumTitle);
+
+              imglist.appendChild(createArticle);
+
+              const optionTag = document.createElement("option");
               optionTag.setAttribute("value", ytId);
+              optionTag.textContent = ytTitle;
               // selectvideo.appendChild(optionTag);
               // movieIdに変更
               movieId.appendChild(optionTag);
-              imglist.appendChild(createImg);
             }
           });
 
