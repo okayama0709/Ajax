@@ -27,11 +27,17 @@ ul {
   padding: 0;
   list-style: none;
 }
-ul:nth-child(1) {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
+
+.ul1 {
   display: flex;
+  -moz-column-gap: 5%;
+       column-gap: 5%;
+  align-items: center;
+  justify-content: center;
+}
+
+article {
+  cursor: pointer;
 }
 
 li {
@@ -62,32 +68,11 @@ img {
 }
 
 .arrow {
+  width: 50px;
   display: inline-block;
-  height: 30px;
-}
-
-.flex {
-  word-break: keep-all;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  -moz-column-gap: 20px;
-       column-gap: 20px;
-  padding-left: 30px;
-}
-.flex li {
-  display: flex;
-  align-items: center;
-  -moz-column-gap: 5%;
-       column-gap: 5%;
-  word-break: keep-all;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  padding: 6px 50px;
-  border-radius: 20px;
-  flex-direction: row;
-  align-items: center;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
 }
 
 .imglist {

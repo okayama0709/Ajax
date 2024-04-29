@@ -20,33 +20,30 @@
     </div>
 
     <div class="wraper">
-      <section class="imglist"></section>
       <nav>
-        <ul>
+        <ul class="ul1">
+          <li id="do10sPrev">
+            <img class="arrow" src="./icons8-左-50.png" alt="" />
+          </li>
           <li id="doplay">再生</li>
           <li id="mute">
             <img src="./unmute.png" alt="mute" />
           </li>
-
-          <div class="flex">
-            <li id="do10sPrev">
-              <img class="arrow" src="./icons8-左-50.png" alt="" />
-              <span>10秒戻る</span>
-            </li>
-            <li id="do10sNext">
-              <span> 10秒前へ</span>
-              <img class="arrow right" src="./icons8-左-50.png" alt="" />
-            </li>
-          </div>
+          <li id="do10sNext">
+            <img class="arrow right" src="./icons8-左-50.png" alt="" />
+          </li>
         </ul>
+      </nav>
+
+      <nav>
         <ul>
           <li>
             <form>
-              <input type="search" id="ytSearch" value="TRiDENT" />
-              <button id="searchBtn">検索</button>
+              <input type="search" id="ytSearchInput" value="UVERworld" />
+              <button type="button" id="searchBtn">検索</button>
             </form>
           </li>
-          <li>
+          <li style="display: none">
             <select id="movieId" class="ytMovie" name="ytMovie">
               <option selected>選択してください。</option>
               <option value="bjN-3EyXNyE">TRiDENT『Alive』MV</option>
@@ -90,13 +87,14 @@
         />
         <span id="volumeNum"></span>
       </label>
+      <section class="imglist"></section>
     </div>
 
     <script>
       // 検索して値を取得する関数
       function ytSearch(val) {
         const imglist = document.querySelector(".imglist");
-        const key = "AIzaSyCZV0ak51HGn1ZSic_dZSC76c11lIuf1zg"; //自分のキーに書き換えます。
+        const key = "AIzaSyCZV0ak51HGn1ZSic_dZSC76c11lIuf1zg"; // 自分のキーに書き換えてください。
         const num = 12;
         const part = "snippet";
         const type = "video";
@@ -104,48 +102,39 @@
         fetch(
           `https://www.googleapis.com/youtube/v3/search?type=${type}&part=${part}&maxResults=${num}&key=${key}&q=${query}&playsinline=1`
         )
+          // json受取
           .then((data) => data.json())
           .then((obj) => {
-            movieId.innerHTML = "";
-            for (let i in obj["items"]) {
-              console.log(obj);
-              //各videoIdとタイトルを取得
-              console.log(obj["items"][i]["id"]["videoId"]);
-              console.log(obj["items"][i]["snippet"]["title"]);
+            imglist.innerHTML = ""; // 前の検索結果をクリア
+            obj["items"].forEach((item) => {
+              const ytId = item["id"]["videoId"];
+              const ytTitle = item["snippet"]["title"];
+              const ytThumbnail = item["snippet"]["thumbnails"]["high"]["url"];
 
-              // const selectvideo = document.querySelector(".searchlist");
-
-              //各videoIdとタイトルを取得して変数に代入
-              const ytId = obj["items"][i]["id"]["videoId"];
-              const ytTitle = obj["items"][i]["snippet"]["title"];
-              //optionを作成して、videoIdとtitleを所定の場所に設置し、要素を追加していく。
-              const createArticle = document.createElement("article");
+              // 各動画のための記事を作成
+              const article = document.createElement("article");
+              article.setAttribute("data-value", ytId); // 動画IDをカスタム属性に設定
               const thumTitle = document.createElement("h3");
               const createImg = document.createElement("img");
-              createImg.setAttribute(
-                "src",
-                obj["items"][i]["snippet"]["thumbnails"]["high"]["url"]
-              );
-              thumTitle.textContent = obj["items"][i]["snippet"]["title"];
+              createImg.src = ytThumbnail;
+              thumTitle.textContent = ytTitle;
 
-              createArticle.appendChild(createImg, thumTitle);
-              createArticle.appendChild(thumTitle);
+              article.appendChild(createImg);
+              article.appendChild(thumTitle);
+              imglist.appendChild(article);
 
-              imglist.appendChild(createArticle);
+              // 各記事にクリックイベントリスナーを追加
+            });
+          })
 
-              const optionTag = document.createElement("option");
-              optionTag.setAttribute("value", ytId);
-              optionTag.textContent = ytTitle;
-              // selectvideo.appendChild(optionTag);
-              // movieIdに変更
-              movieId.appendChild(optionTag);
-            }
-          });
-
-        // .then((obj) => {
-
-        // });
+          .catch((error) =>
+            console.error(
+              "YouTube検索結果の読み込み中にエラーが発生しました:",
+              error
+            )
+          );
       }
+
       // 2. This code loads the IFrame Player API code asynchronously.
       // 2. 変数tagにscriptタグを作って入れる。Element=要素、Attrubute=属性
       var tag = document.createElement("script");
@@ -273,13 +262,20 @@
         document.querySelector("#volumeNum").textContent = currentVol; //⑤テキストにも音量を数値で表示
       }
       //動画切り替えイベント;
-      let movieid = document.querySelector("#MovieId");
-      movieId.addEventListener("change", function () {
-        youtubeId = movieid.value;
-        //プレイヤー削除
-        player.destroy();
-        onYouTubeIframeAPIReady();
-      });
+      // クリックイベントを記事に設定
+      document
+        .querySelector(".imglist")
+        .addEventListener("click", function (event) {
+          // event.targetでクリックされた要素を取得し、それがarticle要素であるかを確認
+          if (event.target.closest("article")) {
+            const article = event.target.closest("article");
+            const videoId = article.getAttribute("value"); // value属性から動画IDを取得
+            youtubeId = article.dataset.value;
+            player.destroy();
+            onYouTubeIframeAPIReady();
+          }
+        });
+
       //再生スピード関数
       function playSpeed(num) {
         //setPlaybackRateが再生スピードをセットするメソッド
@@ -287,7 +283,6 @@
         player.setPlaybackRate(num);
         player.playVideo();
       }
-
       //再生スピードイベント
       let speedBtn = document.querySelector("#doSpeed");
       speedBtn.addEventListener("change", function () {
@@ -299,12 +294,28 @@
       // addBtn.addEventListener("click", (e) => {
       //   addBtn.classList.toggle("closed");
       // });
+
       const ytSearchBtn = document.querySelector("#searchBtn");
       ytSearchBtn.addEventListener("click", function (e) {
         const ytSearchVal = document.querySelector("#ytSearch").value;
         e.preventDefault(); //検索ボタンの送信をストップしておく。
         // 関数の実行
         ytSearch(ytSearchVal);
+      });
+
+      // リロード時にも検索されるように
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("searchForm");
+        const searchBtn = document.getElementById("searchBtn");
+        const ytSearchInput = document.getElementById("ytSearchInput");
+
+        // ボタンクリックで検索実行
+        searchBtn.addEventListener("click", function (event) {
+          ytSearch(ytSearchInput.value);
+        });
+
+        // ページ読み込み時にも検索実行
+        ytSearch(ytSearchInput.value);
       });
     </script>
     <script src="./script.js"></script>
