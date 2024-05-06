@@ -19,6 +19,16 @@
     <div class="precipitation">
       <table></table>
     </div>
+    <div class="img"></div>
+    <div class="seventh">
+      <table>
+        <tr>
+          <th>日付</th>
+          <th>天気</th>
+        </tr>
+      </table>
+    </div>
+
     <script>
       const codeNums = [
         { 愛知県: 230000 },
@@ -149,6 +159,96 @@
               ulElm.insertAdjacentHTML("beforeend", `<li>${weather[key]}</li>`);
             }
             result.append(ulElm);
+          });
+        })
+        .catch(function (err) {
+          console.log("Fetchエラー:", err);
+        });
+    </script>
+    <script src="./weathercodes.js"></script>
+    <script>
+      fetch(weekUrl)
+        .then(function (response) {
+          if (response.status !== 200) {
+            console.log(
+              "問題がありました。ステータスコード:" + response.status
+            );
+            return;
+          }
+          response.json().then(function (data) {
+            const result = document.querySelector(".img");
+            const code = data[0].timeSeries[0].areas[0].weatherCodes;
+
+            for (let i = 0; i < code.length; i++) {
+              //画像に気象庁のアイコンを読み込み、表示させる。
+              const image = document.createElement("img");
+
+              //天気コード内のconst weathercodes内のコードを活用
+              console.log(weathercode[code[i]][0]);
+              const weathericon = weathercode[code[i]][0];
+              image.src = `https://www.jma.go.jp/bosai/forecast/img/${weathericon}`;
+              result.appendChild(image);
+            }
+          });
+        })
+        .catch(function (err) {
+          console.log("Fetchエラー:", err);
+        });
+    </script>
+    <script>
+      fetch(weekUrl)
+        .then(function (response) {
+          if (response.status !== 200) {
+            console.log(
+              "問題がありました。ステータスコード:" + response.status
+            );
+            return;
+          }
+          // responseのテキストを調べる
+          response.json().then(function (data) {
+            //気象庁の天気情報jsonから天気コードを取得
+            const weekly = data[1].timeSeries[0].areas[0].weatherCodes;
+
+            //予報日を取得
+            const weeklyDate = data[1].timeSeries[0].timeDefines;
+            //曜日設定用の配列を用意
+            const dayarray = [
+              "日曜日",
+              "月曜日",
+              "火曜日",
+              "水曜日",
+              "木曜日",
+              "金曜日",
+              "土曜日",
+            ];
+            //表示させるDOMを取得
+            const seventhArea = document.querySelector(".seventh");
+            const tableElm = document.querySelector(".seventh table");
+            //h1に愛知県を表示させて、追加する。
+            const aichiTitle = document.createElement("h1");
+            aichiTitle.innerHTML = `${data[1].timeSeries[0].areas[0].area.name}週間天気`;
+            seventhArea.insertBefore(aichiTitle, tableElm);
+
+            //1週間の日数をループさせる
+            for (let i = 0; i < weekly.length; i++) {
+              console.log(weekly[i], weeklyDate[i]);
+              //trは行、tdは列で必要な要素を作成
+              const trElm = document.createElement("tr");
+              const tdElmData = document.createElement("td");
+              const tdElmWeather = document.createElement("td");
+              //日数を行に設定
+              tdElmData.innerHTML = `${
+                new Date(weeklyDate[i]).getMonth() + 1
+              }月 ${new Date(weeklyDate[i]).getDate()}日（${
+                dayarray[new Date(weeklyDate[i]).getDay()]
+              }）`;
+              trElm.appendChild(tdElmData);
+              //更に天気コードから行に追加
+              tdElmWeather.innerHTML = weathercode[weekly[i]][3];
+              trElm.appendChild(tdElmWeather);
+              //tableに行を追加
+              tableElm.appendChild(trElm);
+            }
           });
         })
         .catch(function (err) {
