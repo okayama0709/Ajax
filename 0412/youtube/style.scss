@@ -86,3 +86,18 @@ img {
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
+.pbottom {
+  width: 100%;
+  position: relative;
+  margin: 0;
+  & li:nth-child(1) {
+    position: absolute;
+    bottom: -20px;
+    right: 270px;
+  }
+  & li:nth-child(2) {
+    position: absolute;
+    bottom: -20px;
+    right: 30px;
+  }
+}

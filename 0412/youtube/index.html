@@ -17,6 +17,35 @@
     <!-- 1. ここの<div>タグがYoutubeの<iframe>に置き換わる。 -->
     <div class="wrap">
       <div id="player"></div>
+      <ul class="pbottom">
+        <li>
+          <form id="doSpeed">
+            <input type="radio" id="mslow" name="speed" value="0.25" />
+            <label for="mslow">0.25</label>
+            <input type="radio" id="slow" name="speed" value="0.5" />
+            <label for="slow">0.5</label>
+            <input type="radio" id="normal" name="speed" value="1.0" checked />
+            <label for="normal">1</label>
+            <input type="radio" id="hspeed" name="speed" value="1.5" />
+            <label for="hspeed">1.5</label>
+            <input type="radio" id="mhspeed" name="speed" value="2" />
+            <label for="mhspeed">2</label>
+          </form>
+        </li>
+        <li>
+          <label
+            >ボリューム<input
+              type="range"
+              min="0"
+              max="100"
+              name="volume"
+              id="volume"
+              value="50"
+            />
+            <span id="volumeNum"></span>
+          </label>
+        </li>
+      </ul>
     </div>
 
     <div class="wraper">
@@ -54,39 +83,9 @@
               </option>
             </select>
           </li>
-          <li>
-            <form id="doSpeed">
-              <input type="radio" id="mslow" name="speed" value="0.25" />
-              <label for="mslow">0.25</label>
-              <input type="radio" id="slow" name="speed" value="0.5" />
-              <label for="slow">0.5</label>
-              <input
-                type="radio"
-                id="normal"
-                name="speed"
-                value="1.0"
-                checked
-              />
-              <label for="normal">1</label>
-              <input type="radio" id="hspeed" name="speed" value="1.5" />
-              <label for="hspeed">1.5</label>
-              <input type="radio" id="mhspeed" name="speed" value="2" />
-              <label for="mhspeed">2</label>
-            </form>
-          </li>
         </ul>
       </nav>
-      <label
-        >ボリューム<input
-          type="range"
-          min="0"
-          max="100"
-          name="volume"
-          id="volume"
-          value="50"
-        />
-        <span id="volumeNum"></span>
-      </label>
+
       <section class="imglist"></section>
     </div>
 
