@@ -58,7 +58,6 @@ li {
 img {
   width: 100%;
   max-width: 100%;
-  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
 }
@@ -70,7 +69,6 @@ img {
 .arrow {
   width: 50px;
   display: inline-block;
-  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
 }
@@ -95,5 +93,4 @@ img {
   position: absolute;
   bottom: -20px;
   right: 30px;
-}
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */
