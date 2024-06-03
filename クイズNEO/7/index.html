@@ -49,10 +49,10 @@ june.html
         const ulElm = document.createElement("ul");
         for (let i = 0; i < anniversarys.length; i++) {
           const liElm = document.createElement("li");
-          liElm.textContent = anniversarys[i];
+          liElm.innerHTML = anniversarys[i];
           ulElm.appendChild(liElm);
         }
-        result.insertAdjacentHTML("afterbegin", ulElm);
+        result.insertAdjacentHTML("afterbegin", ulElm.outerHTML);
       });
     </script>
   </body>
