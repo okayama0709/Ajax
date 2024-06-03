@@ -172,7 +172,7 @@ const weatherCode = {
 const button = document.getElementById("tenki");
 
 const token =
-  "BQAkX9dun2x0pQU4fvr7_j1Q9wTho6EtSg-qImUZhAZCFIQgj7_XntqMo3GvVV3Otm2XkOhfhybxXIj-KiaQTFYo2h_kXP9xEF78gXclClGm4AE1ducSuti7-jzJnt3QVuij50S9-XXU-mqkVCHVbiI0MqCa5h9DukH6xACcUC4vT20FdnIJwz5wf-U9MJAWuzDw2r1U74qykjlrBg6a3Zck76XUiThpSMEyJT4cu82P_DOoCIsw4S8OsnXR0PsCdNPnbiCH9Jdtu_QYIkj6AiCv_urJ"; // ここにあなたのSpotify APIトークンを入力してください
+  "BQC1yXxYgEINeVzpgzMB_eKW5ju0jFaFQoZEr883LNU3gGyyV9NgqrvTeiBIM-A7Tmtu2JEGTkspDTfuBxice2De77LANoQ70N9oldGv7FCjMCiDFhiOiOgiGB5CLOxAOCYDyysBobbOcqAZTqY8V6JSR7-EERcTzuuqjgPNcD9cpUPI0yiZ1bl-U1oe0J8Shfux1gY9RL1Jwco6GCHN-loorLh5fE42E5m8-XD9tlxNIr-TqoYuaQlMDot7UZa9N2eZei3GEV9Gj56Nv2bcqCV2B9ck"; // ここにあなたのSpotify APIトークンを入力してください
 
 async function fetchWebApi(endpoint, method, body) {
   const res = await fetch(`https://api.spotify.com/${endpoint}`, {
